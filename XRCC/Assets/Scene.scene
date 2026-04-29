@@ -1042,7 +1042,7 @@
   PrefabRemaps:
     []
   Name: ExampleGeminiCalls
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: -5.000000, z: 0.000000}
@@ -1915,7 +1915,7 @@
   PrefabRemaps:
     []
   Name: GoogleGenAI Examples
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 22.000000, y: -10.000000, z: 0.000000}
@@ -3023,7 +3023,7 @@
   PrefabRemaps:
     []
   Name: Snap Hosted Examples
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: -10.000000, z: -180.000000}
@@ -3410,9 +3410,9 @@
     {}
   ScriptInputs:
     "":
-      openAIToken: 804aa5f2-9f4f-4067-a2bc-ac9bc6eab4c1
-      googleToken: 981fe8df-bef7-4cd5-b238-9bd58dc46aea
-      snapToken: 3e51d962-a368-41ee-84e9-d5fdc39e33d9
+      openAIToken: ""
+      googleToken: ""
+      snapToken: ""
   ScriptTypes:
     "":
       {}
@@ -3846,7 +3846,7 @@
   PrefabRemaps:
     []
   Name: OpenAI Examples
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: -20.000000, y: -10.000000, z: 0.000000}
@@ -4192,7 +4192,7 @@
   PrefabRemaps:
     []
   Name: ExampleImagenCalls
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -4730,7 +4730,7 @@
   PrefabRemaps:
     []
   Name: ExampleLyriaCall
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -5017,7 +5017,7 @@
   PrefabRemaps:
     []
   Name: DiagramPanel
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
