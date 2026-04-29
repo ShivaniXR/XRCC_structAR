@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/62e0eb46-9ac9-412f-8c2f-c00931d76b70>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> dfdd0ff6-f73d-4c92-9537-2d24e4e69c6b
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> dfdd0ff6-f73d-4c92-9537-2d24e4e69c6b
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 4a376e8f-7f2f-4ed8-94db-a4162fd8513a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/4a376e8f-7f2f-4ed8-94db-a4162fd8513a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 4806d994-c147-43ed-881e-7bf5bd192d3a
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    autoHideSeconds: false
+    captionText: false
+    imageComponent: false
+    panelRoot: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - imageComponent: !<reference.Image> 00000000-0000-0000-0000-000000000000
+      captionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      panelRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      autoHideSeconds: !<float> 0.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input Component.Image imageComponent
+    - // @input Component.Text captionText
+    - // @input SceneObject panelRoot
+    - // @input float autoHideSeconds

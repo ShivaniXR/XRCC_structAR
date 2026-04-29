@@ -1,0 +1,44 @@
+- !<AssetImportMetadata/a8be005b-c29e-4927-8ca7-7665acf408a6>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 1d0abf91-f13d-4527-9021-38af70e739d8
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 1d0abf91-f13d-4527-9021-38af70e739d8
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 555aee9b-4c0b-490d-8803-53c715602919
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/555aee9b-4c0b-490d-8803-53c715602919>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: a2c8d68e-a1d6-4dfa-9471-934e5347fea6
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    structARController: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - structARController: !<reference.ScriptComponent> 00000000-0000-0000-0000-000000000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input Component.ScriptComponent structARController

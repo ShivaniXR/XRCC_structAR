@@ -1,0 +1,68 @@
+- !<AssetImportMetadata/f8675486-0fdf-4dc8-b671-590c6920bf6e>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 1e0e91f2-199d-4fd9-9fa7-041da5445f4f
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 1e0e91f2-199d-4fd9-9fa7-041da5445f4f
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 9af1f89e-06f2-4553-83a0-5552e7c656c8
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/9af1f89e-06f2-4553-83a0-5552e7c656c8>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: 81a957b0-3586-4ed6-af35-c91c42e0f73e
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    dynamicAudioOutputObj: false
+    haveVideoInput: false
+    imagenPanelObj: false
+    microphoneRecorderObj: false
+    model3DPanelObj: false
+    statusDisplay: false
+    transcriptDisplay: false
+    voice: false
+    websocketRequirementsObj: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - websocketRequirementsObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      dynamicAudioOutputObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      microphoneRecorderObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      transcriptDisplay: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      statusDisplay: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      imagenPanelObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      model3DPanelObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      haveVideoInput: true
+      voice: Aoede
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - // @input SceneObject websocketRequirementsObj
+    - // @input SceneObject dynamicAudioOutputObj
+    - // @input SceneObject microphoneRecorderObj
+    - // @input Component.Text transcriptDisplay
+    - // @input Component.Text statusDisplay
+    - // @input SceneObject imagenPanelObj
+    - // @input SceneObject model3DPanelObj
+    - // @input bool haveVideoInput = true
+    - '// @input string voice = "Aoede" {"widget":"combobox", "values":[{"label":"Aoede", "value":"Aoede"}, {"label":"Puck", "value":"Puck"}, {"label":"Kore", "value":"Kore"}, {"label":"Charon", "value":"Charon"}, {"label":"Fenrir", "value":"Fenrir"}, {"label":"Zephyr", "value":"Zephyr"}]}'
