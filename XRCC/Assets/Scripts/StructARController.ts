@@ -58,10 +58,15 @@ export class StructARController extends BaseScriptComponent {
   private imagenPanel: any = null;
   private model3DPanel: any = null;
 
+  // ── Configuration constants ────────────────────────────────────────────────
+  private readonly VIDEO_FRAME_INTERVAL_MS = 2000;
+  private readonly RECONNECT_DELAY_SECONDS = 3.0;
+  private readonly TRANSCRIPT_MAX_LENGTH = 200;
+
   // ── Internals ──────────────────────────────────────────────────────────────
   private audioProcessor: AudioProcessor = new AudioProcessor();
   private videoController: VideoController = new VideoController(
-    2000,
+    this.VIDEO_FRAME_INTERVAL_MS,
     CompressionQuality.IntermediateQuality,
     EncodingType.Jpg
   );
@@ -82,7 +87,7 @@ export class StructARController extends BaseScriptComponent {
     "Say things like: I can see you have already attached the legs, so lets move to the tabletop. " +
     "When the user asks a question or says next step or what do I do, respond with the relevant instruction. " +
     "TOOLS: Call generate_diagram when a visual diagram would clarify a step such as which hole to use, orientation of a part, or a wiring diagram. Do NOT call it for every step, only when spatial or visual clarity matters. " +
-    "Call generate_3d_model when showing a specific component in 3D would help the user identify or orient a part. Use safe, simple objects like wooden block, plastic connector, metal bracket, screw, or furniture part. Use sparingly as 3D generation takes about 60 seconds. " +
+    "Call generate_3d_model when showing a specific component in 3D would help the user identify or orient a part. IMPORTANT: Only use safe, simple objects that pass content filters: wooden dowel, plastic bracket, metal screw, furniture connector, cable tie, rubber washer, spring, gear wheel, wooden block, plastic tube. Avoid tools, weapons, or complex objects. Use sparingly as 3D generation takes about 60 seconds. " +
     "TONE: Calm, clear, encouraging. Like a knowledgeable friend standing next to you.";
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
@@ -212,19 +217,19 @@ export class StructARController extends BaseScriptComponent {
         {
           name: "generate_3d_model",
           description:
-            "Generate a 3D model of a specific component or part so the user can see it from all angles and identify it. Use this when the user needs to identify a specific part or understand its 3D shape. Note: takes 30 to 90 seconds to generate.",
+            "Generate a 3D model of a specific component or part so the user can see it from all angles and identify it. Use this when the user needs to identify a specific part or understand its 3D shape. Note: takes 30 to 90 seconds to generate. IMPORTANT: Only use safe, simple objects that pass content filters.",
           parameters: {
             type: "object",
             properties: {
               prompt: {
                 type: "string",
                 description:
-                  "Text description of the 3D object to generate. Be specific about shape, size, and material. Example: cam lock nut, cylindrical metal furniture connector, 15mm diameter, silver",
+                  "Text description of the 3D object to generate. Use ONLY safe, simple objects: wooden dowel, plastic bracket, metal screw, furniture connector, cable tie, rubber washer, spring, gear wheel, wooden block, plastic tube, metal ring, plastic cap, rubber gasket. Be specific about shape, size, and material. Example: wooden dowel pin, cylindrical, 8mm diameter, light brown wood",
               },
               part_name: {
                 type: "string",
                 description:
-                  "Human-readable name of the part shown to the user. Example: Cam Lock Nut",
+                  "Human-readable name of the part shown to the user. Example: Wooden Dowel Pin",
               },
             },
             required: ["prompt", "part_name"],
@@ -307,6 +312,11 @@ export class StructARController extends BaseScriptComponent {
     this.setStatus("Generating diagram...");
     print("[structAR] Imagen prompt: " + prompt);
 
+    // Show loading state immediately
+    if (this.imagenPanel && typeof this.imagenPanel.showLoadingFromController === "function") {
+      this.imagenPanel.showLoadingFromController(caption);
+    }
+
     const request: GoogleGenAITypes.Imagen.ImagenRequest = {
       model: "imagen-4.0-fast-generate-001",
       body: {
@@ -352,6 +362,12 @@ export class StructARController extends BaseScriptComponent {
     this.setStatus("Generating 3D: " + partName + " (~60s)");
     print("[structAR] Snap3D prompt: " + prompt);
 
+    // Check for potentially problematic words and suggest safer alternatives
+    const saferPrompt = this.makeSaferPrompt(prompt);
+    if (saferPrompt !== prompt) {
+      print("[structAR] Modified prompt for safety: " + saferPrompt);
+    }
+
     // Show loading state immediately
     if (this.model3DPanel && typeof this.model3DPanel.showLoadingFromController === "function") {
       this.model3DPanel.showLoadingFromController(partName);
@@ -364,7 +380,7 @@ export class StructARController extends BaseScriptComponent {
     });
 
     Snap3D.submitAndGetStatus({
-      prompt: prompt,
+      prompt: saferPrompt,
       format: "glb",
       refine: true,
       use_vertex_color: false,
@@ -385,13 +401,64 @@ export class StructARController extends BaseScriptComponent {
             const err = data as Snap3DTypes.ErrorData;
             print("[structAR] Snap3D failed: " + err.errorMsg);
             this.setStatus("3D generation failed");
+            this.handleSnap3DFailure(callId, err.errorMsg, partName);
           }
         });
       })
       .catch((err) => {
         print("[structAR] Snap3D submit error: " + err);
         this.setStatus("3D generation failed");
+        this.handleSnap3DFailure(callId, String(err), partName);
       });
+  }
+
+  private makeSaferPrompt(prompt: string): string {
+    // Replace potentially problematic words with safer alternatives
+    const replacements: { [key: string]: string } = {
+      "hammer": "wooden mallet head",
+      "knife": "plastic cutting edge",
+      "blade": "flat metal piece",
+      "gun": "cylindrical tube",
+      "weapon": "tool component",
+      "sharp": "pointed",
+      "cutting": "separating",
+      "drill": "cylindrical rod",
+      "saw": "toothed edge",
+      "axe": "wedge shape",
+      "sword": "long flat piece"
+    };
+
+    let saferPrompt = prompt.toLowerCase();
+    for (const [unsafe, safe] of Object.entries(replacements)) {
+      saferPrompt = saferPrompt.replace(new RegExp(unsafe, 'gi'), safe);
+    }
+
+    return saferPrompt;
+  }
+
+  private handleSnap3DFailure(callId: string, errorMsg: string, partName: string) {
+    // Hide loading spinner
+    if (this.model3DPanel && typeof this.model3DPanel.hidePanel === "function") {
+      this.model3DPanel.hidePanel();
+    }
+
+    // Check if it's an ALD verification failure
+    if (errorMsg.includes("ALD verification failed")) {
+      print("[structAR] Content filter rejected prompt - suggesting diagram instead");
+      
+      // Send response suggesting diagram instead
+      this.sendToolResponse(callId, "generate_3d_model", {
+        success: false,
+        error: "Content filter rejected 3D prompt. Suggesting diagram instead.",
+        suggestion: "generate_diagram"
+      });
+    } else {
+      // Other error
+      this.sendToolResponse(callId, "generate_3d_model", {
+        success: false,
+        error: errorMsg
+      });
+    }
   }
 
   private show3DModel(gltfAsset: GltfAsset, partName: string) {
@@ -468,7 +535,7 @@ export class StructARController extends BaseScriptComponent {
         this.connect();
       }
     });
-    delay.reset(3.0);
+    delay.reset(this.RECONNECT_DELAY_SECONDS);
   }
 
   // ── UI helpers ─────────────────────────────────────────────────────────────
@@ -479,7 +546,9 @@ export class StructARController extends BaseScriptComponent {
 
   private setTranscript(text: string) {
     if (this.transcriptDisplay) {
-      const trimmed = text.length > 200 ? "..." + text.slice(-197) : text;
+      const trimmed = text.length > this.TRANSCRIPT_MAX_LENGTH 
+        ? "..." + text.slice(-(this.TRANSCRIPT_MAX_LENGTH - 3)) 
+        : text;
       this.transcriptDisplay.text = trimmed;
     }
   }

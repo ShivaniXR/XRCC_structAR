@@ -28,6 +28,7 @@
   ScriptInputsHidden:
     autoHideSeconds: false
     captionText: false
+    debugLogging: false
     imageComponent: false
     panelRoot: false
   ScriptTypesHidden:
@@ -43,6 +44,7 @@
       captionText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       panelRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       autoHideSeconds: !<float> 0.000000
+      debugLogging: false
   ScriptTypes:
     -
       {}
@@ -51,3 +53,4 @@
     - // @input Component.Text captionText
     - // @input SceneObject panelRoot
     - // @input float autoHideSeconds
+    - // @input bool debugLogging

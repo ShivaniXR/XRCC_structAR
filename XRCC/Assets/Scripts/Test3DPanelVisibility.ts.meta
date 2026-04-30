@@ -1,20 +1,20 @@
-- !<AssetImportMetadata/bd47fcde-79d9-4514-a4bf-e1554756fa7a>
+- !<AssetImportMetadata/2bc08605-206c-4192-bd55-68030dfbaa7f>
   ImportedAssetIds:
-    JavaScriptAsset: !<reference> 4073c92e-64b5-49e9-99e0-dbab5ad848d5
-  ImporterName: JavaScriptAssetImporter
-  PrimaryAsset: !<reference> 4073c92e-64b5-49e9-99e0-dbab5ad848d5
+    TypeScriptAsset: !<reference> 9ebc72c9-94db-489b-8da3-fcb3d1b4059a
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 9ebc72c9-94db-489b-8da3-fcb3d1b4059a
   PackageType: NotAPackage
   LegacyPackagePolicy: ~
   ExtraData:
     {}
   AssetDataMap:
-    JavaScriptAsset: !<own> 9b09ee04-a343-4d8a-bdb6-031ce998de1e
+    TypeScriptAsset: !<own> 752ed67c-6b97-4dbd-983a-c4f0116dc3f1
   DependentFiles:
     []
   ImporterSettings: !<AssetImporterSettings>
     {}
   CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
-- !<ScriptAssetData/9b09ee04-a343-4d8a-bdb6-031ce998de1e>
+- !<TypeScriptAssetData/752ed67c-6b97-4dbd-983a-c4f0116dc3f1>
   SvgIcon: ""
   SetupScript:
     code: ""
@@ -22,11 +22,11 @@
   VersionMajor: 0
   VersionMinor: 0
   VersionPatch: 0
-  ComponentUid: b52cd349-8b56-4cf6-8b68-4e1426d798e7
+  ComponentUid: b56b6822-695c-4cb9-9b82-224384029f61
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    imageView: false
+    model3DPanelObj: false
   ScriptTypesHidden:
     {}
   ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
@@ -36,7 +36,9 @@
   Attachments:
     []
   DefaultScriptInputs:
-    - imageView: !<reference.Image> 00000000-0000-0000-0000-000000000000
+    - model3DPanelObj: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
+  InputLines:
+    - // @input SceneObject model3DPanelObj

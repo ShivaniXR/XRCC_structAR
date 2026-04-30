@@ -292,9 +292,9 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Position: {x: 0.000000, y: -0.536564, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    Scale: {x: 0.051300, y: 0.051300, z: 0.051300}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -420,7 +420,7 @@
   PrefabRemaps:
     []
   Name: LoadingSpinner
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -1819,7 +1819,7 @@
   PrefabRemaps:
     []
   Name: LoadingSpinner
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -1844,7 +1844,6 @@
     "":
       modelRoot: !<reference.SceneObject> 6b270f75-525e-4cc3-b717-d6afc1078c41
       modelMaterial: !<reference.Material> 4fd787d9-5296-4e5a-9d50-a9a06079156a
-      loadingIndicator: !<reference.SceneObject> ab807ab7-b87b-4bfd-84cb-178e6d0086ff
       partNameText: !<reference.Text> e9873d41-5342-4b23-84c2-4abc38f32550
       panelRoot: !<reference.SceneObject> 8b10c389-8f53-4759-b912-322c4bd2388a
       rotationDegreesPerSecond: !<float> 30.000000
@@ -1885,7 +1884,7 @@
   PrefabRemaps:
     []
   Name: Snap3D Title
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -2412,9 +2411,9 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 20.000000, y: -43.558201, z: -180.000000}
+    Position: {x: 0.000000, y: -2.035103, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 5.000000, y: 5.000000, z: 5.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -2681,8 +2680,8 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> ab807ab7-b87b-4bfd-84cb-178e6d0086ff
     - !<own> 5bfd07f1-3bb6-4b7f-9d02-bbb754d015e6
+    - !<own> ab807ab7-b87b-4bfd-84cb-178e6d0086ff
   Components:
     []
 - !<SceneObject/6bf04e34-6299-4f27-8f48-259345a32666>
@@ -2816,7 +2815,7 @@
   MeshShadowMode: None
   ShadowColor: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
   ShadowDensity: 1.000000
-  Text: Text
+  Text: ""
   Editable: false
   ShowEditingPreview: true
   TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
@@ -2828,8 +2827,8 @@
     bottom: -2.690000
     right: 7.500000
     top: 2.250000
-  OverflowVertical: Overflow
-  OverflowHorizontal: Overflow
+  OverflowVertical: Truncate
+  OverflowHorizontal: Wrap
   Fill: !<TextFill>
     Mode: Solid
     Color: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -3410,9 +3409,9 @@
     {}
   ScriptInputs:
     "":
-      openAIToken: ""
-      googleToken: ""
-      snapToken: ""
+      openAIToken: 804aa5f2-9f4f-4067-a2bc-ac9bc6eab4c1
+      googleToken: 981fe8df-bef7-4cd5-b238-9bd58dc46aea
+      snapToken: 3e51d962-a368-41ee-84e9-d5fdc39e33d9
   ScriptTypes:
     "":
       {}
@@ -3516,7 +3515,7 @@
   PrefabRemaps:
     []
   Name: Model3DPanel
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -3525,7 +3524,6 @@
     HasSegmentScaleCompensation: false
   Children:
     - !<own> a25bede6-3be8-415a-a31c-f7ac815e5e9a
-    - !<own> 6b270f75-525e-4cc3-b717-d6afc1078c41
   Components:
     []
 - !<SceneObject/8b1597e7-0f83-4295-a17b-d12cd299f954>
@@ -3816,7 +3814,7 @@
   PrefabRemaps:
     []
   Name: Text
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.900000, z: 0.000000}
@@ -3986,7 +3984,7 @@
   PrefabRemaps:
     []
   Name: Snap 3D Examples
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 20.000000, y: -10.000000, z: 0.000000}
@@ -4049,7 +4047,7 @@
   PrefabRemaps:
     []
   Name: StructARModel3DPanel
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -4057,7 +4055,7 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    []
+    - !<own> 6b270f75-525e-4cc3-b717-d6afc1078c41
   Components:
     - !<own> 50404a45-32a8-4d48-b5a4-c5fb1310f429
 - !<SceneObject/a4be667c-356e-4cf4-81ef-21e3e55cb1c2>
@@ -4264,9 +4262,9 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 20.000000, y: -33.000000, z: -180.000000}
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 5.000000, y: 5.000000, z: 5.000000}
+    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -4670,6 +4668,7 @@
   ScriptAsset: !<reference> dfdd0ff6-f73d-4c92-9537-2d24e4e69c6b
   ScriptInputsDefault:
     autoHideSeconds: true
+    debugLogging: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -4678,6 +4677,7 @@
       captionText: !<reference.Text> 928fd064-5557-41df-b1ce-54e9de509ac2
       panelRoot: !<reference.SceneObject> d25b0e82-e06e-4914-b45f-aa9f252b9152
       autoHideSeconds: !<float> 0.000000
+      debugLogging: false
   ScriptTypes:
     "":
       {}
@@ -4908,6 +4908,22 @@
     - !<own> e67355a4-c26a-4bfc-b712-56f879b0f199
   Components:
     []
+- !<ScriptComponent/cb84eb87-4f9d-4497-91fa-0bfa8b282556>
+  PrefabRemaps:
+    []
+  Name: LoadingSpinner
+  Enabled: true
+  ScriptAsset: !<reference> 8452f399-da74-4ae7-ad18-cb07c1a9c836
+  ScriptInputsDefault:
+    renderOrder: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      renderOrder: 0
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/cbe23cda-7bf6-451e-a60f-334bfbe52e6f>
   PrefabRemaps:
     []
@@ -4975,19 +4991,20 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: -15.428192, y: 0.000000, z: -151.736313}
+    Position: {x: -27.773285, y: 0.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 32.000000, y: 32.000000, z: 32.000000}
     HasSegmentScaleCompensation: false
   Children:
-    []
+    - !<own> 0b91bbad-3332-4400-9090-03c87020a7eb
+    - !<own> e7e5d9c0-e755-4758-9861-c5d9921cc979
   Components:
     - !<own> 6dd50800-40a7-4b86-90df-df3bc3289f40
 - !<SceneObject/d02cfa0a-7d9e-4fa0-a260-6ccad8af2d35>
   PrefabRemaps:
     []
   Name: Text
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.900000, z: 0.000000}
@@ -5026,7 +5043,6 @@
     HasSegmentScaleCompensation: false
   Children:
     - !<own> cfca254f-984f-479e-a4a9-25406c0be4d1
-    - !<own> 0b91bbad-3332-4400-9090-03c87020a7eb
   Components:
     - !<own> bbc89094-fd0e-4c4f-b3e9-a0c5d2804297
 - !<SceneObject/d3340ef4-90e8-49c1-aeb6-4194ed9937f9>
@@ -5066,7 +5082,7 @@
   Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 2.000000, z: 0.000000}
+    Position: {x: 0.000000, y: 69.132904, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
@@ -5414,6 +5430,21 @@
     []
   Components:
     []
+- !<SceneObject/e7e5d9c0-e755-4758-9861-c5d9921cc979>
+  PrefabRemaps:
+    []
+  Name: LoadingSpinner 1
+  Enabled: true
+  Layers: 1
+  LocalTransform: !<TransformEntity>
+    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    Scale: {x: 0.148691, y: 0.148691, z: 0.148691}
+    HasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> cb84eb87-4f9d-4497-91fa-0bfa8b282556
 - !<ScriptComponent/e83f5f84-e636-47e5-84bc-e6df1b8b16b6>
   PrefabRemaps:
     []
@@ -5639,7 +5670,6 @@
   ScriptInputsDefault:
     refineMesh: true
     useVertexColor: true
-    runOnTap: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
@@ -5652,7 +5682,7 @@
       refinedMeshRoot: !<reference.SceneObject> d6fb959c-0cef-43be-8c9f-5d82272ede18
       modelMat: !<reference.Material> 291ef087-954d-4ddd-9224-bb63f0d59386
       hintText: !<reference.Text> 61c419c3-d5a4-471c-9324-acddbeef4bc8
-      runOnTap: false
+      runOnTap: true
   ScriptTypes:
     "":
       {}
@@ -5921,7 +5951,7 @@
   PrefabRemaps:
     []
   Name: Text
-  Enabled: false
+  Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.900000, z: 0.000000}

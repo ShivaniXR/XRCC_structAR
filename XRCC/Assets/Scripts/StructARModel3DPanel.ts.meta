@@ -26,7 +26,6 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
-    loadingIndicator: false
     modelMaterial: false
     modelRoot: false
     panelRoot: false
@@ -43,7 +42,6 @@
   DefaultScriptInputs:
     - modelRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       modelMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
-      loadingIndicator: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       partNameText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       panelRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       rotationDegreesPerSecond: !<float> 30.000000
@@ -53,7 +51,6 @@
   InputLines:
     - // @input SceneObject modelRoot
     - // @input Asset.Material modelMaterial
-    - // @input SceneObject loadingIndicator
     - // @input Component.Text partNameText
     - // @input SceneObject panelRoot
     - // @input float rotationDegreesPerSecond = 30

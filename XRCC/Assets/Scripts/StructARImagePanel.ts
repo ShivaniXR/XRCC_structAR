@@ -20,16 +20,56 @@ export class StructARImagePanel extends BaseScriptComponent {
   @input panelRoot: SceneObject;
 
   @input autoHideSeconds: number = 0;
+  @input debugLogging: boolean = false;
 
   private hideAt: number = 0;
+  private loadingSpinner: SceneObject | null = null;
 
   onAwake() {
+    // Initialize spinner from imageComponent's SceneObject child (like ExampleSnap3D)
+    this.initializeSpinner();
+    
     this.setPanelVisible(false);
+    
+    // Validate inputs
+    if (this.autoHideSeconds < 0) {
+      print("[ImagePanel] ⚠️ autoHideSeconds cannot be negative, setting to 0");
+      this.autoHideSeconds = 0;
+    }
+    
+    // Ensure the Image component has a valid material
+    if (this.imageComponent && !this.imageComponent.mainMaterial) {
+      print("[ImagePanel] ⚠️ Image component has no material assigned!");
+    }
+    
+    print("[ImagePanel] Initialized");
+  }
+
+  private initializeSpinner() {
+    // Like ExampleSnap3D: spinner is child[1] of the image's SceneObject
+    if (this.imageComponent) {
+      const imageSceneObject = this.imageComponent.getSceneObject();
+      if (imageSceneObject && imageSceneObject.getChildrenCount() > 1) {
+        this.loadingSpinner = imageSceneObject.getChild(1);
+        print("[ImagePanel] Found loading spinner at imageComponent.sceneObject.getChild(1)");
+      } else {
+        print("[ImagePanel] ⚠️ No spinner found - add a child object at index 1 under image SceneObject");
+      }
+    }
+    
+    // Start with spinner disabled
+    if (this.loadingSpinner) {
+      this.loadingSpinner.enabled = false;
+    }
   }
 
   // Public methods called directly by StructARController
   public showDiagramFromController(mimeType: string, b64: string, caption: string) {
     this.showDiagram(b64, caption);
+  }
+
+  public showLoadingFromController(caption: string) {
+    this.showLoading(caption);
   }
 
   public hidePanel() {
@@ -45,8 +85,29 @@ export class StructARImagePanel extends BaseScriptComponent {
   }
 
   /**
+   * Show loading state with spinner
+   */
+  private showLoading(caption: string) {
+    this.setPanelVisible(true);
+    
+    // Hide the image, show spinner
+    if (this.imageComponent) {
+      this.imageComponent.enabled = false;
+    }
+    if (this.loadingSpinner) {
+      this.loadingSpinner.enabled = true;
+      print("[ImagePanel] Loading spinner enabled");
+    }
+    if (this.captionText) {
+      this.captionText.text = "Generating: " + caption;
+    }
+    
+    print("[ImagePanel] Showing loading state");
+  }
+
+  /**
    * Load a base64-encoded image and display it on the panel.
-   * Uses the RemoteMediaModule pattern from RSG examples.
+   * Uses the same method as RSG ExampleImagenCalls.
    */
   private showDiagram(b64: string, caption: string) {
     if (!this.imageComponent) {
@@ -55,69 +116,61 @@ export class StructARImagePanel extends BaseScriptComponent {
     }
 
     try {
-      // Decode base64 to raw bytes
-      const bytes: Uint8Array = Base64.decode(b64);
-
-      // Load as texture via RemoteMediaModule (same pattern as Snap3D texture loading)
-      const remoteMediaModule = require("LensStudio:RemoteMediaModule") as RemoteMediaModule;
-      const internetModule = require("LensStudio:InternetModule") as InternetModule;
-
-      // Build an HTTP request pointing to a data URI isn't supported directly,
-      // so we use the Snap-provided approach: write bytes to a temp resource
-      // and load via loadResourceAsImageTexture.
-      //
-      // In practice on Spectacles, the cleanest approach is to use
-      // Base64.encodeTextureAsync in reverse — but the SDK doesn't expose that.
-      // Instead we use the ProceduralTextureProvider approach:
-      this.loadTextureFromBytes(bytes, remoteMediaModule, (texture: Texture) => {
-        this.imageComponent.mainPass.baseTex = texture;
-        this.setPanelVisible(true);
-        if (this.captionText) this.captionText.text = caption || "";
-        if (this.autoHideSeconds > 0) {
-          this.hideAt = getTime() + this.autoHideSeconds;
+      // Use the same method as ExampleImagenCalls - Base64.decodeTextureAsync
+      Base64.decodeTextureAsync(
+        b64,
+        (texture: Texture) => {
+          if (this.debugLogging) {
+            print("[ImagePanel] 🔍 Texture decoded - width: " + texture.getWidth() + ", height: " + texture.getHeight());
+          }
+          
+          // Clone the existing material
+          const imageMaterial = this.imageComponent.mainMaterial.clone();
+          if (this.debugLogging) {
+            print("[ImagePanel] Cloning existing material: " + imageMaterial.name);
+          }
+          
+          this.imageComponent.mainMaterial = imageMaterial;
+          this.imageComponent.mainPass.baseTex = texture;
+          
+          if (this.debugLogging) {
+            print("[ImagePanel] 🔍 Pass: " + this.imageComponent.mainPass.name);
+            print("[ImagePanel] 🔍 baseTex set: " + (this.imageComponent.mainPass.baseTex !== null));
+          }
+          
+          // Hide spinner, show image
+          if (this.loadingSpinner) {
+            this.loadingSpinner.enabled = false;
+          }
+          this.imageComponent.enabled = true;
+          
+          this.setPanelVisible(true);
+          if (this.captionText) this.captionText.text = caption || "";
+          if (this.autoHideSeconds > 0) {
+            this.hideAt = getTime() + this.autoHideSeconds;
+          }
+          
+          print("[ImagePanel] ✅ Diagram displayed");
+        },
+        () => {
+          print("[ImagePanel] ❌ Failed to decode texture from base64 data");
+          // Hide spinner, still show panel with caption as fallback
+          if (this.loadingSpinner) {
+            this.loadingSpinner.enabled = false;
+          }
+          this.setPanelVisible(true);
+          if (this.captionText) this.captionText.text = caption || "";
         }
-        print("[ImagePanel] ✅ Diagram displayed");
-      });
+      );
 
     } catch (e) {
       print("[ImagePanel] ❌ showDiagram error: " + e);
-      // Still show panel with caption as fallback
+      // Hide spinner, still show panel with caption as fallback
+      if (this.loadingSpinner) {
+        this.loadingSpinner.enabled = false;
+      }
       this.setPanelVisible(true);
       if (this.captionText) this.captionText.text = caption || "";
-    }
-  }
-
-  private loadTextureFromBytes(
-    bytes: Uint8Array,
-    remoteMediaModule: RemoteMediaModule,
-    onSuccess: (tex: Texture) => void
-  ) {
-    // Spectacles doesn't expose Resource.fromBytes in all builds
-    // Use the fallback approach directly
-    this.fallbackLoadTexture(bytes, onSuccess);
-  }
-
-  /**
-   * Fallback: create a ProceduralTextureProvider and write pixel data.
-   * Works when Resource.fromBytes is unavailable.
-   */
-  private fallbackLoadTexture(bytes: Uint8Array, onSuccess: (tex: Texture) => void) {
-    try {
-      // Use the existing material's texture slot if it already has one
-      const mat = this.imageComponent.mainMaterial;
-      if (!mat) return;
-
-      const existingTex = mat.mainPass.baseTex as any;
-      if (existingTex && typeof existingTex.loadBase64 === "function") {
-        // Some Lens Studio builds expose loadBase64 on texture assets
-        const b64 = Base64.encode(bytes);
-        existingTex.loadBase64(b64);
-        onSuccess(existingTex as Texture);
-      } else {
-        print("[ImagePanel] ⚠️ No texture loading method available in this build");
-      }
-    } catch (e) {
-      print("[ImagePanel] ❌ Fallback texture load failed: " + e);
     }
   }
 

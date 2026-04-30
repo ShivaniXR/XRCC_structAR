@@ -22,7 +22,6 @@ export class StructARModel3DPanel extends BaseScriptComponent {
 
   @input modelRoot: SceneObject;
   @input modelMaterial: Material;
-  @input loadingIndicator: SceneObject;
   @input partNameText: Text;
   @input panelRoot: SceneObject;
 
@@ -30,9 +29,45 @@ export class StructARModel3DPanel extends BaseScriptComponent {
 
   private currentModel: SceneObject | null = null;
   private isRotating: boolean = false;
+  private loadingSpinner: SceneObject | null = null;
 
   onAwake() {
+    // Initialize spinner from modelRoot's child (like ExampleSnap3D does)
+    this.initializeSpinner();
+    
+    // Start with panel hidden
     this.setPanelVisible(false);
+    
+    // Validate rotation speed
+    if (this.rotationDegreesPerSecond < 0 || this.rotationDegreesPerSecond > 360) {
+      print("[3DPanel] ⚠️ rotationDegreesPerSecond out of range [0-360], clamping to safe value");
+      this.rotationDegreesPerSecond = Math.max(0, Math.min(360, this.rotationDegreesPerSecond));
+    }
+    
+    // Verify inputs
+    if (!this.panelRoot) {
+      print("[3DPanel] ⚠️ panelRoot not assigned - panel will not be visible!");
+    }
+    if (!this.modelRoot) {
+      print("[3DPanel] ⚠️ modelRoot not assigned - models cannot be instantiated!");
+    }
+    
+    print("[3DPanel] Initialized");
+  }
+
+  private initializeSpinner() {
+    // Like ExampleSnap3D: spinner is child[1] of modelRoot
+    if (this.modelRoot && this.modelRoot.getChildrenCount() > 1) {
+      this.loadingSpinner = this.modelRoot.getChild(1);
+      print("[3DPanel] Found loading spinner at modelRoot.getChild(1)");
+    } else {
+      print("[3DPanel] ⚠️ No spinner found - add a child object at index 1 under modelRoot");
+    }
+    
+    // Start with spinner disabled
+    if (this.loadingSpinner) {
+      this.loadingSpinner.enabled = false;
+    }
   }
 
   // Public methods called directly by StructARController
@@ -64,17 +99,28 @@ export class StructARModel3DPanel extends BaseScriptComponent {
   }
 
   private showLoading(partName: string) {
+    print("[3DPanel] showLoading called for: " + partName);
+    
     // Clear any existing model
     this.clearCurrentModel();
 
     // Show panel with loading state
+    print("[3DPanel] Setting panel visible...");
     this.setPanelVisible(true);
-    if (this.loadingIndicator) this.loadingIndicator.enabled = true;
+    
+    if (this.loadingSpinner) {
+      this.loadingSpinner.enabled = true;
+      print("[3DPanel] Loading spinner enabled");
+    } else {
+      print("[3DPanel] ⚠️ No loading spinner to show");
+    }
+    
     if (this.partNameText) {
       this.partNameText.text = "Generating: " + partName + "\n(~60 seconds)";
     }
+    
     this.isRotating = false;
-    print("[3DPanel] Showing loading state for: " + partName);
+    print("[3DPanel] ✅ Loading state visible");
   }
 
   private showModel(gltfAsset: GltfAsset, partName: string) {
@@ -87,13 +133,20 @@ export class StructARModel3DPanel extends BaseScriptComponent {
     this.clearCurrentModel();
 
     try {
+      // Instantiate at child[0] (spinner is at child[1])
       this.currentModel = gltfAsset.tryInstantiate(
         this.modelRoot,
         this.modelMaterial
       );
 
-      if (this.loadingIndicator) this.loadingIndicator.enabled = false;
-      if (this.partNameText) this.partNameText.text = partName;
+      // Hide spinner
+      if (this.loadingSpinner) {
+        this.loadingSpinner.enabled = false;
+      }
+      
+      if (this.partNameText) {
+        this.partNameText.text = partName;
+      }
 
       this.setPanelVisible(true);
       this.isRotating = true;
@@ -116,6 +169,11 @@ export class StructARModel3DPanel extends BaseScriptComponent {
   }
 
   private setPanelVisible(visible: boolean) {
-    if (this.panelRoot) this.panelRoot.enabled = visible;
+    if (this.panelRoot) {
+      this.panelRoot.enabled = visible;
+      print("[3DPanel] Panel visibility set to: " + visible);
+    } else {
+      print("[3DPanel] ❌ Cannot set visibility - panelRoot is null!");
+    }
   }
 }
