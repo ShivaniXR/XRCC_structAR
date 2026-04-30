@@ -26,6 +26,7 @@
   ExportUid: 00000000-0000-0000-0000-000000000000
   PackagePolicy: CanBeUnpacked
   ScriptInputsHidden:
+    loadingSpinner: false
     modelMaterial: false
     modelRoot: false
     panelRoot: false
@@ -44,6 +45,7 @@
       modelMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
       partNameText: !<reference.Text> 00000000-0000-0000-0000-000000000000
       panelRoot: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      loadingSpinner: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
       rotationDegreesPerSecond: !<float> 30.000000
   ScriptTypes:
     -
@@ -53,4 +55,5 @@
     - // @input Asset.Material modelMaterial
     - // @input Component.Text partNameText
     - // @input SceneObject panelRoot
+    - '// @input SceneObject loadingSpinner {"hint":"Assign your spinner/loading SceneObject directly here"}'
     - // @input float rotationDegreesPerSecond = 30

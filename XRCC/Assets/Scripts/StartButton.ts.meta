@@ -1,0 +1,50 @@
+- !<AssetImportMetadata/d5c256c9-191e-4ca7-b1a0-2e82235fdb75>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 8e4f4555-4f73-4726-9797-2dd5256023e0
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 8e4f4555-4f73-4726-9797-2dd5256023e0
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 2c319f90-8fa6-4318-a88c-1d6a144f1c61
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/2c319f90-8fa6-4318-a88c-1d6a144f1c61>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  ComponentUid: d15d4424-280a-429c-a657-17bfb3ac2960
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    hideOnTap: false
+    startImage: false
+    structARController: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - structARController: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      startImage: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      hideOnTap: true
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input SceneObject structARController {"hint":"The SceneObject that has the StructARController script on it"}'
+    - '// @input SceneObject startImage {"hint":"The start screen display image to hide when button is tapped"}'
+    - '// @input bool hideOnTap = true {"hint":"Hide this button image after it is tapped"}'

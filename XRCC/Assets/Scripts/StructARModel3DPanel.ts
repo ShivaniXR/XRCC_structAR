@@ -8,7 +8,7 @@
  * Wiring in Inspector:
  *   - modelRoot:        SceneObject to parent the instantiated GLTF under
  *   - modelMaterial:    Material to apply to the GLTF mesh
- *   - loadingIndicator: SceneObject (spinner/loading UI) shown during generation
+ *   - loadingSpinner:   SceneObject (spinner/loading UI) shown during generation
  *   - partNameText:     Text component showing the part name
  *   - panelRoot:        Root SceneObject to show/hide the whole panel
  *
@@ -25,49 +25,28 @@ export class StructARModel3DPanel extends BaseScriptComponent {
   @input partNameText: Text;
   @input panelRoot: SceneObject;
 
+  @input
+  @hint("Assign your spinner/loading SceneObject directly here")
+  loadingSpinner: SceneObject;
+
   @input rotationDegreesPerSecond: number = 30.0;
 
   private currentModel: SceneObject | null = null;
   private isRotating: boolean = false;
-  private loadingSpinner: SceneObject | null = null;
 
   onAwake() {
-    // Initialize spinner from modelRoot's child (like ExampleSnap3D does)
-    this.initializeSpinner();
-    
-    // Start with panel hidden
+    // Start with panel and spinner hidden
     this.setPanelVisible(false);
-    
-    // Validate rotation speed
-    if (this.rotationDegreesPerSecond < 0 || this.rotationDegreesPerSecond > 360) {
-      print("[3DPanel] ⚠️ rotationDegreesPerSecond out of range [0-360], clamping to safe value");
-      this.rotationDegreesPerSecond = Math.max(0, Math.min(360, this.rotationDegreesPerSecond));
-    }
-    
-    // Verify inputs
-    if (!this.panelRoot) {
-      print("[3DPanel] ⚠️ panelRoot not assigned - panel will not be visible!");
-    }
-    if (!this.modelRoot) {
-      print("[3DPanel] ⚠️ modelRoot not assigned - models cannot be instantiated!");
-    }
-    
-    print("[3DPanel] Initialized");
-  }
-
-  private initializeSpinner() {
-    // Like ExampleSnap3D: spinner is child[1] of modelRoot
-    if (this.modelRoot && this.modelRoot.getChildrenCount() > 1) {
-      this.loadingSpinner = this.modelRoot.getChild(1);
-      print("[3DPanel] Found loading spinner at modelRoot.getChild(1)");
-    } else {
-      print("[3DPanel] ⚠️ No spinner found - add a child object at index 1 under modelRoot");
-    }
-    
-    // Start with spinner disabled
     if (this.loadingSpinner) {
       this.loadingSpinner.enabled = false;
+    } else {
+      print("[3DPanel] ⚠️ loadingSpinner not assigned in Inspector");
     }
+
+    if (!this.panelRoot) print("[3DPanel] ⚠️ panelRoot not assigned!");
+    if (!this.modelRoot) print("[3DPanel] ⚠️ modelRoot not assigned!");
+
+    print("[3DPanel] Initialized");
   }
 
   // Public methods called directly by StructARController

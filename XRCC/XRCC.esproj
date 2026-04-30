@@ -13,7 +13,7 @@ metaInfo:
     []
   tags:
     []
-  lensName: Fix It AI
+  lensName: StructAR
   lensDescriptors:
     - GEN_AI_ICON
   lensApplicability:
@@ -22,7 +22,7 @@ metaInfo:
   lensClientCompatibilities:
     - Spectacles
   platformBundlesEnabled: false
-  iconHash: 0ce62a66593fa8a6d5e6e944b64c3880
+  iconHash: d6a3dab1f7bd1c7daa2ef71da324c763
   videoPreviewHash: ""
   fromTemplateName: Spectacles
   fromTemplateUrl: Lens Studio 5.15.3.26011319

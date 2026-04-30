@@ -71,6 +71,7 @@ export class StructARController extends BaseScriptComponent {
     EncodingType.Jpg
   );
 
+  private hasInitialized: boolean = false;
   private geminiLive: ReturnType<typeof Gemini.liveConnect> | null = null;
   private isConnected: boolean = false;
   private transcriptAccumulator: string = "";
@@ -103,22 +104,72 @@ export class StructARController extends BaseScriptComponent {
     this.imagenPanel = this.resolveScript(this.imagenPanelObj, "imagenPanelObj");
     this.model3DPanel = this.resolveScript(this.model3DPanelObj, "model3DPanelObj");
 
-    this.setStatus("Initializing...");
+    this.setStatus("Waiting to start...");
 
-    // Delay initialization until OnStartEvent so all components are awake
-    this.createEvent("OnStartEvent").bind(() => {
-      this.delayedInit();
-    });
+    // NOTE: Connection is started by StartButton calling startLens().
+    // Do NOT auto-connect here — wait for the button tap.
+    print("[structAR] onAwake complete. Waiting for startLens() call.");
   }
 
   private delayedInit() {
+    // Guard: only initialize once
+    if (this.hasInitialized) {
+      print("[structAR] Already initialized, skipping");
+      return;
+    }
+    this.hasInitialized = true;
+
+    print("[structAR] delayedInit running...");
+
+    // Enable all required SceneObjects first so getComponent works on them
+    if (this.dynamicAudioOutputObj) this.dynamicAudioOutputObj.enabled = true;
+    if (this.microphoneRecorderObj) this.microphoneRecorderObj.enabled = true;
+    if (this.websocketRequirementsObj) this.websocketRequirementsObj.enabled = true;
+
+    // Re-resolve now that objects are enabled
+    this.dynamicAudioOutput = this.resolveScript(this.dynamicAudioOutputObj, "dynamicAudioOutputObj");
+    this.microphoneRecorder = this.resolveScript(this.microphoneRecorderObj, "microphoneRecorderObj");
+    this.imagenPanel = this.resolveScript(this.imagenPanelObj, "imagenPanelObj");
+    this.model3DPanel = this.resolveScript(this.model3DPanelObj, "model3DPanelObj");
+
+    print("[structAR] dynamicAudioOutput: " + (this.dynamicAudioOutput ? "✅" : "❌ NULL"));
+    print("[structAR] microphoneRecorder: " + (this.microphoneRecorder ? "✅" : "❌ NULL"));
+
+    // Enable AudioComponent before calling initialize() — play() fails if it's disabled
+    if (this.dynamicAudioOutputObj) {
+      const audioComp = this.dynamicAudioOutputObj.getComponent("AudioComponent");
+      if (audioComp) {
+        audioComp.enabled = true;
+        print("[structAR] ✅ AudioComponent enabled");
+      } else {
+        print("[structAR] ⚠️ No AudioComponent found on dynamicAudioOutputObj");
+      }
+    }
+
     if (this.dynamicAudioOutput && typeof this.dynamicAudioOutput.initialize === "function") {
       this.dynamicAudioOutput.initialize(24000);
+      print("[structAR] ✅ dynamicAudioOutput initialized");
+    } else {
+      print("[structAR] ⚠️ dynamicAudioOutput.initialize not available");
     }
+
     if (this.microphoneRecorder && typeof this.microphoneRecorder.setSampleRate === "function") {
       this.microphoneRecorder.setSampleRate(16000);
+      print("[structAR] ✅ microphoneRecorder sample rate set");
+    } else {
+      print("[structAR] ⚠️ microphoneRecorder.setSampleRate not available");
     }
+
     this.connect();
+  }
+
+  /**
+   * Called by StartButton to kick off Gemini connection.
+   * Keeps the SceneObject always enabled so onAwake fires correctly.
+   */
+  public startLens() {
+    print("[structAR] startLens() called by StartButton");
+    this.delayedInit();
   }
 
   // ── Resolve a SceneObject to its first ScriptComponent ────────────────────
@@ -127,17 +178,29 @@ export class StructARController extends BaseScriptComponent {
       print("[structAR] WARNING: " + label + " not assigned in inspector");
       return null;
     }
-    const sc = obj.getComponent("ScriptComponent") as any;
-    if (!sc) {
+    // getComponents returns ALL script components — iterate to find the right one
+    const scripts = obj.getComponents("ScriptComponent") as any[];
+    if (!scripts || scripts.length === 0) {
       print("[structAR] WARNING: no ScriptComponent found on " + label);
+      return null;
     }
-    return sc;
+    if (scripts.length === 1) {
+      return scripts[0];
+    }
+    // Multiple scripts — return the first non-null one and log all names
+    print("[structAR] " + label + " has " + scripts.length + " script components");
+    for (let i = 0; i < scripts.length; i++) {
+      print("[structAR]   [" + i + "] " + (scripts[i] ? scripts[i].getTypeName?.() || "unknown" : "null"));
+    }
+    return scripts[0];
   }
 
   // ── Connection ─────────────────────────────────────────────────────────────
   private connect() {
+    print("[structAR] connect() called — attempting Gemini.liveConnect()");
     this.setStatus("Connecting to Gemini...");
     this.geminiLive = Gemini.liveConnect();
+    print("[structAR] Gemini.liveConnect() returned: " + (this.geminiLive ? "✅ object" : "❌ null"));
 
     this.geminiLive.onOpen.add(() => {
       print("[structAR] WebSocket open");
@@ -153,7 +216,7 @@ export class StructARController extends BaseScriptComponent {
     });
 
     this.geminiLive.onClose.add((e: any) => {
-      print("[structAR] WS closed: " + (e.reason || ""));
+      print("[structAR] WS closed: " + (e.reason || "no reason"));
       this.isConnected = false;
       this.setStatus("Disconnected. Reconnecting...");
       this.scheduleReconnect();
@@ -469,10 +532,20 @@ export class StructARController extends BaseScriptComponent {
 
   // ── Streaming ──────────────────────────────────────────────────────────────
   private startStreaming() {
+    // Re-resolve in case onAwake ran before the objects were ready
     if (!this.microphoneRecorder) {
-      print("[structAR] ERROR: microphoneRecorder not resolved");
+      this.microphoneRecorder = this.resolveScript(this.microphoneRecorderObj, "microphoneRecorderObj");
+    }
+    if (!this.dynamicAudioOutput) {
+      this.dynamicAudioOutput = this.resolveScript(this.dynamicAudioOutputObj, "dynamicAudioOutputObj");
+    }
+
+    if (!this.microphoneRecorder) {
+      print("[structAR] ERROR: microphoneRecorder not resolved — check microphoneRecorderObj is assigned in Inspector");
       return;
     }
+
+    print("[structAR] Starting mic and video streams...");
 
     // Mic audio → Gemini
     this.audioProcessor.onAudioChunkReady.add((encodedChunk: string) => {
@@ -490,6 +563,7 @@ export class StructARController extends BaseScriptComponent {
     });
 
     this.microphoneRecorder.startRecording();
+    print("[structAR] ✅ Microphone recording started");
 
     // Camera frames → Gemini
     if (this.haveVideoInput) {
@@ -504,6 +578,7 @@ export class StructARController extends BaseScriptComponent {
       });
 
       this.videoController.startRecording();
+      print("[structAR] ✅ Video recording started");
     }
   }
 
