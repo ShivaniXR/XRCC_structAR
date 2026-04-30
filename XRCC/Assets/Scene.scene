@@ -1422,6 +1422,26 @@
     - !<own> 4a8fba8e-5e79-4c17-9b90-eecc02c7b7dc
   Components:
     []
+- !<ScriptComponent/3eba2015-ae78-44ee-9e77-c4054ebfea2a>
+  PrefabRemaps:
+    []
+  Name: StructARModel3DPanel
+  Enabled: false
+  ScriptAsset: !<reference> 9dc8fd0a-1dcb-4ddb-945d-35036723beb1
+  ScriptInputsDefault:
+    rotationDegreesPerSecond: true
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      modelRoot: !<reference.SceneObject> 6b270f75-525e-4cc3-b717-d6afc1078c41
+      modelMaterial: !<reference.Material> 4fd787d9-5296-4e5a-9d50-a9a06079156a
+      partNameText: !<reference.Text> e9873d41-5342-4b23-84c2-4abc38f32550
+      panelRoot: !<reference.SceneObject> 8b10c389-8f53-4759-b912-322c4bd2388a
+      rotationDegreesPerSecond: !<float> 30.000000
+  ScriptTypes:
+    "":
+      {}
 - !<SceneObject/3edde0ea-8cd6-43be-9a1e-265dcd328ee6>
   PrefabRemaps:
     []
@@ -1830,26 +1850,6 @@
     []
   Components:
     - !<own> ab9b0b76-6b58-42c8-8598-6380f20e21d2
-- !<ScriptComponent/50404a45-32a8-4d48-b5a4-c5fb1310f429>
-  PrefabRemaps:
-    []
-  Name: StructARModel3DPanel
-  Enabled: true
-  ScriptAsset: !<reference> 9dc8fd0a-1dcb-4ddb-945d-35036723beb1
-  ScriptInputsDefault:
-    rotationDegreesPerSecond: true
-  ScriptTypesDefault:
-    {}
-  ScriptInputs:
-    "":
-      modelRoot: !<reference.SceneObject> 6b270f75-525e-4cc3-b717-d6afc1078c41
-      modelMaterial: !<reference.Material> 4fd787d9-5296-4e5a-9d50-a9a06079156a
-      partNameText: !<reference.Text> e9873d41-5342-4b23-84c2-4abc38f32550
-      panelRoot: !<reference.SceneObject> 8b10c389-8f53-4759-b912-322c4bd2388a
-      rotationDegreesPerSecond: !<float> 30.000000
-  ScriptTypes:
-    "":
-      {}
 - !<SceneObject/50669f73-0c9b-42d1-8124-6a90383ccac8>
   PrefabRemaps:
     []
@@ -2411,9 +2411,9 @@
   Enabled: true
   Layers: 1
   LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: -2.035103, z: 0.000000}
+    Position: {x: 0.000000, y: -0.407021, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    Scale: {x: 0.200000, y: 0.200000, z: 0.200000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -2677,11 +2677,11 @@
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    Scale: {x: 5.000000, y: 5.000000, z: 5.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> 5bfd07f1-3bb6-4b7f-9d02-bbb754d015e6
     - !<own> ab807ab7-b87b-4bfd-84cb-178e6d0086ff
+    - !<own> 5bfd07f1-3bb6-4b7f-9d02-bbb754d015e6
   Components:
     []
 - !<SceneObject/6bf04e34-6299-4f27-8f48-259345a32666>
@@ -3515,7 +3515,7 @@
   PrefabRemaps:
     []
   Name: Model3DPanel
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
@@ -3523,9 +3523,9 @@
     Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
     HasSegmentScaleCompensation: false
   Children:
-    - !<own> a25bede6-3be8-415a-a31c-f7ac815e5e9a
+    - !<own> 6b270f75-525e-4cc3-b717-d6afc1078c41
   Components:
-    []
+    - !<own> 3eba2015-ae78-44ee-9e77-c4054ebfea2a
 - !<SceneObject/8b1597e7-0f83-4295-a17b-d12cd299f954>
   PrefabRemaps:
     []
@@ -4043,21 +4043,6 @@
   ScriptTypes:
     "":
       {}
-- !<SceneObject/a25bede6-3be8-415a-a31c-f7ac815e5e9a>
-  PrefabRemaps:
-    []
-  Name: StructARModel3DPanel
-  Enabled: true
-  Layers: 1
-  LocalTransform: !<TransformEntity>
-    Position: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
-    HasSegmentScaleCompensation: false
-  Children:
-    - !<own> 6b270f75-525e-4cc3-b717-d6afc1078c41
-  Components:
-    - !<own> 50404a45-32a8-4d48-b5a4-c5fb1310f429
 - !<SceneObject/a4be667c-356e-4cf4-81ef-21e3e55cb1c2>
   PrefabRemaps:
     []
@@ -4264,7 +4249,7 @@
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
     Rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
-    Scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    Scale: {x: 0.200000, y: 0.200000, z: 0.200000}
     HasSegmentScaleCompensation: false
   Children:
     []
@@ -5034,7 +5019,7 @@
   PrefabRemaps:
     []
   Name: DiagramPanel
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform: !<TransformEntity>
     Position: {x: 0.000000, y: 0.000000, z: 0.000000}
